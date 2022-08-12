@@ -1,14 +1,11 @@
 var a = ['','one ','two ','three ','four ', 'five ','six ','seven ','eight ','nine ','ten ','eleven ','twelve ','thirteen ','fourteen ','fifteen ','sixteen ','seventeen ','eighteen ','nineteen '];
-	var b = ['', '', 'twenty','thirty','forty','fifty', 'sixty','seventy','eighty','ninety'];
+var b = ['twenty','thirty','forty','fifty', 'sixty','seventy','eighty','ninety'];
 module.exports = function toReadable (number) {
-		if ((number = number.toString()).length > 9) return 'overflow';
-		n = ('000000000' + number).substr(-9).match(/^(\d{2})(\d{2})(\d{2})(\d{1})(\d{2})$/);
-		if (!n) return; var str = '';
-		str += (n[1] != 0) ? (a[Number(n[1])] || b[n[1][0]] + '' + a[n[1][1]]) + 'crore ' : '';
-		str += (n[2] != 0) ? (a[Number(n[2])] || b[n[2][0]] + '' + a[n[2][1]]) + 'lakh ' : '';
-		str += (n[3] != 0) ? (a[Number(n[3])] || b[n[3][0]] + '' + a[n[3][1]]) + 'thousand ' : '';
-		str += (n[4] != 0) ? (a[Number(n[4])] || b[n[4][0]] + '' + a[n[4][1]]) + 'hundred ' : '';
-		str += (n[5] != 0) ? ((str != '') ? '' : '') + (a[Number(n[5])] || b[n[5][0]] + ' ' + a[n[5][1]]) : '';
-		return str;
+	if (number < 20) return a[number];
+	let digit = number%10;
+	if (number < 100) return b[~~(number/10)-2] + (digit? " " + a[digit]: "");
+	if (number < 1000) return a[~~(number/100)] +"hundred" + (number%100 == 0? "": " " + toReadable(number%100));
+	return toReadable(~~(number/1000)) + " thousand" + (number%1000 != 0? " " + toReadable(number%1000): "");
 }
+
 
